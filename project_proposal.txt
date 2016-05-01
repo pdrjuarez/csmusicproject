@@ -1,0 +1,34 @@
+The Fab’s Team
+~*~Project Proposal~*~
+By Jordan Ng, Pedro Juarez, & Michelle Kim
+Spring 2016, CS123
+
+Data set: The Million Song Dataset http://labrosa.ee.columbia.edu/millionsong/ 
+    Field list: http://labrosa.ee.columbia.edu/millionsong/faq 
+    More detailed documentation of fields: http://developer.echonest.com/docs/v4/_static/AnalyzeDocumentation.pdf 
+Size: 280 GB
+Number of observations: 1,000,000
+    (A smaller subset of 10,000 songs (1.8 GB) is also offered)
+
+This dataset is available as an Amazon Public Dataset snapshot, which will make it easier to grab only the data that we are actually interested in. Given the size of this dataset, any subset of variables that we look at is still likely to be in the dozens of gigabytes. 
+
+Hypotheses:
+    - Does the length of a song’s title influence its popularity (“hotttnesss”)? Does this change by year?
+    - Does complexity/variation (as measured by comparing number of segments with song length, and number of unique segment pitches/timbre/loudness, among other things) affect popularity? 
+    - Is there a correlation between key and tempo?  Time signature and key? 
+    - Where are artists located? Do artists in different locations favor certain keys? 
+    - Do major songs tend to have different time signatures, more segments, or different tempos?
+
+Main variables of interest (in addition to the ones above) that can be used for further analysis: 
+    - Title
+    - Artist name
+    - Artist familiarity
+    - Year released
+    - Artist location, familiarity, and hotness (current popularity)
+    - Hotness rating
+    - Key of song
+    - Tempo
+    - Time signature
+    - Similar Artists
+    - Segments
+        - A single song may have about a dozen sections and hundreds (maybe thousands) of segments, each of which has time start, loudness, pitches, and timbre.
