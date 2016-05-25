@@ -1,0 +1,46 @@
+05/19/2016
+- MEETING PREP:
+    - 
+
+
+
+05/06/2016
+- MEETING PREP:
+    - Pitfalls:
+        - 2/3 of our laptops can't run VMs well enough to be useful
+        - CSIL machines can't work with h5 files, even in venv
+        - data's pretty dirty, from what we can tell from db subset files
+            - there are duplicates, songs with durations <5s, missing years, wrong song-album matches, etc
+            - this might be okay since VERY large dataset, and easy to filter most
+    - Questions:
+        - Working with the data: should we
+            a) Build a clean database from the h5 files, store it somewhere, and work with that?
+                Pros: 
+                    - faster if we run multiple questions (which we plan on doing)
+                    - don't have to worry about working with h5 files; just run this on one computer, store it, work with that
+                    - only extract meaningful/clean data
+                Cons:
+                    - large inital time
+                Q) For scalability: If we do this, can we store it in AWS? It will still be a huge file.
+                        - How? (As a bucket, volume, snapshot?)
+                        - If we store it, would it cost money? How long can we store it?
+                        - Can we write code for AWS to write from one volume to another internally?                         
+            b) Write a script to work with the h5 files to ignore dirty data
+                Pros:
+                    - (possibly) faster since it's on the go
+                Cons:
+                    - have to work with h5 files
+                Q) For practicality: Is there a way to work with h5 files via Python on the CSIL machines?
+                     - We've tried venv but it still won't let us install the necessary packages:
+                        - h5py (standalone library) OR
+                        - PyTables, which requires (in addition to extant libraries):
+                            - NDF5
+                            - Numexpr
+                            - Cython
+                        (Note: Pandas has HDFStore, but requires PyTables)
+
+- MEETING NOTES:
+    - Just do everything on EC2 instance
+
+- MISC:
+    - For artist hotttness and familiarity, group and use median value (bc outliers)
