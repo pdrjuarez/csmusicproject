@@ -1,0 +1,70 @@
+AWS EC2 DOCUMENTATION: 
+    $ aws ec2 [command] help
+BOTO3 DOCUMENTATION: (boto3 is very recent, so older stackexchange posts will not be relevant)
+    http://boto3.readthedocs.io/en/latest/guide/quickstart.html
+    http://boto3.readthedocs.io/en/latest/reference/services/ec2.html
+
+#############################
+###      USING BOTO3      ###
+#############################
+CREDENTIALS
+    http://boto3.readthedocs.io/en/latest/guide/configuration.html
+    Do NOT hardcode the keys/tokens into your python script.
+        One option is that we can pass them in as parameters, but that'd be kinda hard.
+        Another option is that we can have boto3 automatically read them from a config file:
+            By default, AWS_CONFIG_FILE = '~/.aws/config', so change that to be where your .awsconfig file is (hopefully '~/.awsconfig'; let's standardize this)
+
+SESSIONS vs CLIENTS vs RESOURCES
+    SESSIONS: http://boto3.readthedocs.io/en/latest/guide/session.html
+        One is created by default and we don't really have to worry about it.
+    RESOURCES: http://boto3.readthedocs.io/en/latest/guide/resources.html
+        This is the interface to AWS, in which we can pass parameters such as 'ec2' or 's3'. 
+        A resource is a higher level abstraction, whereas CLIENTS are more raw.
+        Technically, a resource is a type of client.
+
+
+#############################
+### LAUNCHING AN INSTANCE ###
+#############################
+
+THROUGH CLI:
+
+    $ aws ec2 run-instances --image-id ami-f5f41398 --count 1 --instance-type t2.micro --key-name musicproject
+
+To run more instances, replace "--count 1" with "--count N", N being however many instances you want
+It's recommended that you break up large instance counts into separate commands
+e.g. instead of saying "--count 500" once, say "--count 100" 5 times
+
+THROUGH PYTHON:
+
+    import boto3
+    ec2 = boto3.resource('ec2')
+    instances = ec2.create_instances(ImageId='ami-f5f41398', MinCount=1, MaxCount=1, InstanceType='t2.micro', KeyName='musicproject')
+
+Returns a list of Instance resources ("EC2.Instance")
+
+
+#############################
+### DO STUFF W/ INSTANCES ###
+#############################
+
+http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#instance
+
+    Most relevant for now:
+        id
+        attach_volume(**kwargs)
+        detach_volume(**kwargs)
+        start(**kwargs)
+        stop(**kwargs)
+        terminate(**kwargs)
+            Can terminate multiple instances with one command
+            Can be used multiple times on a single instance successfully without crashing
+
+    Volume documentation for use with instances:
+        http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#EC2.Instance.volumes
+
+    Waiters:
+        wait_until_exists()
+        wait_until_running()
+        wait_until_stopped()
+        wait_until_terminated()
