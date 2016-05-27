@@ -1,10 +1,10 @@
 on the terminal, run
 
-	scp -i jordan.pem setup.sh ec2-user@publicdns:~/
+	scp -i ~/musicproject.pem setup.sh ec2-user@publicdns:~/
 
 Then, ssh into the ec2 instance:
 
-	ssh -i jordan.pem ec2-user@publicdns
+	ssh -i ~/musicproject.pem ec2-user@publicdns
 
 setup.sh should be here. 
 	
@@ -15,7 +15,7 @@ Wait like 20 minutes for everything to install. There might be some prompts, ans
 Mount the music snapshot to the instance as /mnt/music
 move validate.py to the server. For some reason it won't let us move it to root, so move it to /home/ec2-user:
 
-	scp -i jordan.pem csvify.py ec2-user@publicdns:~/
+	scp -i ~/musicproject.pem csvify.py ec2-user@publicdns:~/
 
 on the ec2 instance, cd to make sure we're in the right spot, then move it to root:
 
