@@ -13,6 +13,7 @@ validate.py
 
 setup.sh
 
+
 ##################################
 the below is a rough draft which
 ideally will be typed up in LaTeX
@@ -52,6 +53,14 @@ NEW BIG DATA TOOLS/TECHS (optional)
 -------------------
 CHALLENGES WE FACED (and overcame, or didn't)
 -------------------
+CHALLENGE: h5 files, didn't know how to read them
+SOLUTION: realize we need to work within an ec2 instance
+
+CHALLENGE: messy dataset
+SOLUTION: ???
+
+CHALLENGE: large dataset
+SOLUTION: ???
 
 
 ------------------

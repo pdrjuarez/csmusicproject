@@ -1,0 +1,45 @@
+
+
+TECHNICAL
+- Figure out how to run things on an instance properly
+- Figure out how to run things on multiple instances properly
+
+ANALYSIS
+- Choose solid hypotheses
+- Determine what algorithms we need
+- Determine what big data techniques we can use
+- Actually code things
+
+CLEANING DATASET
+- In csvify.py, filter dataset for ...
+    songs that actually have ...
+        year
+        title
+        artist_familiarity
+        artist_hotttnesss
+        artist_latitude
+        artist_longitude
+        artist_location
+        artist_name
+        artist_terms (This is stuff like radio, dance, techno, country)
+        artist_terms_freq (not sure what this is)
+        artist_terms_weight (Not sure what this is but related to the above 2? I think one of these is how often this term is mentioned in relation to this artist or something. Both are arrays of numbers 0 to 1
+
+    with confidence levels > 0.25 for ...
+        duration
+        danceability
+        energy
+
+        mode
+        key
+        tempo
+        loudness
+        time_signature
+
+- For artist hotttness and familiarity, group and use median value (bc outliers)
+
+
+
+
+
+    'get_analysis_sample_rate', 'get_artist_7digitalid', 'get_artist_familiarity', 'get_artist_hotttnesss', 'get_artist_id', 'get_artist_latitude', 'get_artist_location', 'get_artist_longitude', 'get_artist_mbid', 'get_artist_mbtags', 'get_artist_mbtags_count', 'get_artist_name', 'get_artist_playmeid', 'get_artist_terms', 'get_artist_terms_freq', 'get_artist_terms_weight', 'get_audio_md5', 'get_bars_confidence', 'get_bars_start', 'get_beats_confidence', 'get_beats_start', 'get_danceability', 'get_duration', 'get_end_of_fade_in', 'get_energy', 'get_key', 'get_key_confidence', 'get_loudness', 'get_mode', 'get_mode_confidence', 'get_num_songs', 'get_release', 'get_release_7digitalid', 'get_sections_confidence', 'get_sections_start', 'get_segments_confidence', 'get_segments_loudness_max', 'get_segments_loudness_max_time', 'get_segments_loudness_start', 'get_segments_pitches', 'get_segments_start', 'get_segments_timbre', 'get_similar_artists', 'get_song_hotttnesss', 'get_song_id', 'get_start_of_fade_out', 'get_tatums_confidence', 'get_tatums_start', 'get_tempo', 'get_time_signature', 'get_time_signature_confidence', 'get_title', 'get_track_7digitalid', 'get_track_id', 'get_year'
