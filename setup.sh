@@ -58,3 +58,12 @@ rm /var/swap.1
 
 cd
 git clone https://github.com/tbertinmahieux/MSongsDB
+
+
+export HDF5_DIR=/usr/local/hdf5
+export LD_LIBRARY_PATH=/usr/local/hdf5/lib
+cd /home/ec2-user
+
+
+
+
