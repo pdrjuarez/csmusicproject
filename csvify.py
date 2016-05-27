@@ -18,7 +18,7 @@ assert os.path.isdir(code_path), 'Expected path MSongsDB'
 sys.path.append(os.path.join(code_path, 'PythonSrc'))
 
 import hdf5_getters as gt
-header='''artist,title,album,year,duration,artist_familiarity,artist_terms,artist_terms_freq, artist_terms_weight,mode,key,tempo,loudness,danceabilty,energy,time_signature,segments_start,segments_timbre,segments_pitches,segments_loudness_start,segments_loudness_max,segments_loudness_max_time,sections_start\n'''
+header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,song_hotttnesss,artist_terms,artist_terms_freq, artist_terms_weight,mode,key,tempo,loudness,danceabilty,energy,time_signature,segments_start,segments_timbre,segments_pitches,segments_loudness_start,segments_loudness_max,segments_loudness_max_time,sections_start\n'''
 
 def csv_convert(basedir, csv_filename):
 	t1=time.time()
