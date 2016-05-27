@@ -48,6 +48,8 @@ def h5_to_csv_fields(h5,song):
 	rv.append(gt.get_year(h5,song))
 	rv.append(gt.get_duration(h5,song))
 	rv.append(gt.get_artist_familiarity(h5,song))
+	rv.append(gt.get_artist_hotttnesss(h5,song))
+	rv.append(gt.get_song_hotttnesss(h5, song))
 	rv.append(array_to_csv_field(list(gt.get_artist_terms(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_artist_terms_freq(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_artist_terms_weight(h5,song))))
@@ -93,6 +95,7 @@ def double_Array_to_csv_field(double_array, char1, char2):
 def validate_song(h5_file,song):
 	'''Returns true/false if song is valid or not'''
 	try:
+		assert gt.get_year(h5_file, song)!='0'
 		assert gt.get_duration(h5_file, song)>60.0
 		assert gt.get_mode_confidence(h5_file, song)>0.2
 		assert gt.get_key_confidence(h5_file, song)>0.2
