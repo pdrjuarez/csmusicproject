@@ -35,6 +35,10 @@ To run more instances, replace "--count 1" with "--count N", N being however man
 It's recommended that you break up large instance counts into separate commands
 e.g. instead of saying "--count 500" once, say "--count 100" 5 times
 
+To ssh into the instance:
+    $ aws ec2 describe-instances --query "Reservations[].Instances[].PublicDnsName"
+    $ ssh -i ~/musicproject.pem ec2-user@####publicdns####
+
 THROUGH PYTHON:
 
     import boto3

@@ -56,11 +56,15 @@ CHALLENGES WE FACED (and overcame, or didn't)
 CHALLENGE: h5 files, didn't know how to read them
 SOLUTION: realize we need to work within an ec2 instance
 
-CHALLENGE: messy dataset
-SOLUTION: ???
+CHALLENGE: running setup.sh in our instance was difficult
+DESCRIPTION: The script took a long time. We didn't see the printouts at first because we went into root to actually run the script, but we were able to see them once we ctrl+d back to ec2-user. Things didn't work at first, but fiddling around with the code fixed it. Specifically, we reran the following manually:
+    
+    cd
+    git clone https://github.com/tbertinmahieux/MSongsDB
 
-CHALLENGE: large dataset
-SOLUTION: ???
+    export HDF5_DIR=/usr/local/hdf5
+    export LD_LIBRARY_PATH=/usr/local/hdf5/lib
+    cd /home/ec2-user
 
 
 ------------------

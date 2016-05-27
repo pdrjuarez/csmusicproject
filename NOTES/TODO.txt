@@ -1,4 +1,8 @@
+NOTES
 
+        pip install --upgrade pip
+
+#########################
 
 TECHNICAL
 - Figure out how to run things on an instance properly
@@ -6,6 +10,14 @@ TECHNICAL
 
 ANALYSIS
 - Choose solid hypotheses
+    - len(song_title) ~ song_hotttnesss?
+        - year?
+    - Does the length of a song’s title influence its popularity (“hotttnesss”)? Does this change by year?
+    - Does complexity/variation (as measured by comparing number of segments with song length, and number of unique segment pitches/timbre/loudness, among other things) affect popularity? 
+    - Is there a correlation between key and tempo?  Time signature and key? 
+    - Where are artists located? Do artists in different locations favor certain keys? 
+    - Do major songs tend to have different time signatures, more segments, or different tempos?
+
 - Determine what algorithms we need
 - Determine what big data techniques we can use
 - Actually code things
@@ -17,8 +29,6 @@ CLEANING DATASET
         title
         artist_familiarity
         artist_hotttnesss
-        artist_latitude
-        artist_longitude
         artist_location
         artist_name
         artist_terms (This is stuff like radio, dance, techno, country)
