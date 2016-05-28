@@ -1,11 +1,11 @@
 # Question: 
-#   Does an artist's hotttnesss affect their average song hotttnesss? 
+#   Is an artist's hotttnesss related to their average song hotttnesss? 
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 import math
 
-class MRCorr(MRJob):
+class MRCorrHotttnessAverage(MRJob):
 
     def mapper(self, _, line):
         '''
@@ -41,5 +41,5 @@ class MRCorr(MRJob):
         yield n, (sumx, sumy, sumxx, sumyy, sumxy)
 
 if __name__ == '__main__':
-    MRCorr.run()
+    MRCorrHotttnessAverage.run()
 
