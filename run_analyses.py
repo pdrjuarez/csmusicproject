@@ -16,12 +16,12 @@ def run_job(args):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     out = proc.communicate()[0]
     out = out.decode("utf-8")
-    # get rid of special characters for clean split
-    out = out.translate({ord(i):None for i in '[],'})
-    out = out.split()
     return out
 
 def run_corr_hotttnesss(out):
+    # get rid of special characters for clean split
+    out = out.translate({ord(i):None for i in '[],'})
+    out = out.split()
     pass
 
 def go():
