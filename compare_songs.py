@@ -4,32 +4,26 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 import math
 
-f=open("A_A.csv")
-trash=f.readline()
-test_song=f.readline().split(",")
-test_array=[v.split(";") for v in song[header.index("segments_pitches")].split("_")]
-count=0
-test_pitches=[]
-while count<len(test_array):
-    test_pitches.append(count*50)
-f.close()
-
 class MRcomparesong(MRJob):
 
     def mapper(self, _, line):
-        song=line.split(",")
-        pitch_array=[v.split(";") for v in song[header.index("segments_pitches")].split("_")]
-        ##need to define test_Array and test_pitches
-        matches=pitch_match(test_array,pitch_array,test_pitches)
-        percent_match=percent_match(matches, len(pitch_array))
-        if percent_match>0.10:
-            song_id="{},{}".format(song[header.index("title"),song[header.index("artist")]])
-            yield song_id, percent_match
+        if line[:12]!="artist,title":    
+            song=line.split(",")
+            pitch_array=[v.split(";") for v in song[header.index("segments_pitches")].split("_")]
+            ##need to define test_Array and test_pitches
+            matches=pitch_match(test_array,pitch_array,test_pitches)
+            per_cent_match=percent_match(matches, len(pitch_array))
+            if per_cent_match>0.10:
+                song_id="{},{}".format(song[header.index("title"),song[header.index("artist")]])
+                print("mapper")
+                yield song_id, per_cent_match
 
     def combiner(self, key, vals):
+        print("combiner", key)
         yield key, list(vals)[0]
 
     def reducer(self, key, vals):
+        print("reducer", key)
         yield key, list(vals)[0]
 
 class MatchObject:
@@ -60,7 +54,7 @@ def pitch_match(test_array, song_array, test_pitches):
         while i < len(song_array)-1:
             rel_pitch=get_relative_pitch(song_array[i], song_array[i+1])
             if starting_rel_pitch==rel_pitch:
-                matchobject=Matchobject(j, None, i, None)
+                matchobject=MatchObject(j, None, i, None)
                 match=True
                 test_song_index=j+1
                 other_song_index=i+1
@@ -110,7 +104,8 @@ def get_relative_pitch(v1, v2):
     except:
         max_num=0
         pitch1=None
-        for j in range(len):
+        for j in range(12):
+            print(v1[j])
             if float(v1[j])>max_num:
                 max_num=float(v1[j])
                 pitch1=j
@@ -118,7 +113,7 @@ def get_relative_pitch(v1, v2):
         pitch2=v2.index("1.0")
     except:
         max_num=0
-        pitch1=None
+        pitch2=None
         for j in range(12):
             if float(v2[j])>max_num:
                 max_num=float(v2[j])
@@ -129,5 +124,18 @@ def get_relative_pitch(v1, v2):
 
 
 if __name__ == '__main__':
+    print("here")
+    f=open("A_A.csv")
+    trash=f.readline()
+    test_song=f.readline().split(",")
+    test_array=[v.split(";") for v in test_song[header.index("segments_pitches")].split("_")]
+    count=0
+    test_pitches=[]
+    print("all the way")
+    while count<len(test_array):
+        test_pitches.append(count)
+        count+=50
+    f.close()
+    print("we made it")
     MRcomparesong.run()
 
