@@ -26,6 +26,7 @@ class MRCorrHotttnessAverage(MRJob):
         complex the song is according to the distribution of its notes,
         and bucket it by the song's hotttnesss score to the nearest 1000th.
         '''
+        print("mapper")
         try:
             # get pitches of each segment
             pitches = line.split(",")[header.index("segments_pitches")]
@@ -54,6 +55,7 @@ class MRCorrHotttnessAverage(MRJob):
     def combinera(self, hottt_bucket, complexity):
         '''
         '''
+        print("combiner")
         complexity_list = list(complexity)
         average_complexity = sum(complexity) / len(complexity)
         yield None, (hottt_bucket, average_complexity)
@@ -61,6 +63,7 @@ class MRCorrHotttnessAverage(MRJob):
     def reducera(self, key, info):
         '''
         '''
+        print("reducer")
         yield info[0], info[1]
 
 
