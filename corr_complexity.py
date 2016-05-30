@@ -21,7 +21,7 @@ class MRCorrHotttnessAverage(MRJob):
         pitches = [x.split(";") for x in pitches.split("_")]
         keys = [0] * 12
         for seg in pitches:
-            key = seg.index("1.0")
+            key = seg.index(max(seg))
             keys[key] += 1
 
         # normalize counts
