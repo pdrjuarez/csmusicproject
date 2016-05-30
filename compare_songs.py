@@ -4,7 +4,7 @@ from mrjob.job import MRJob
 from mrjob.step import MRStep
 import math
 
-f=open("B_C.csv")
+f=open("A_A.csv")
 trash=f.readline()
 test_song=f.readline().split(",")
 test_array=[v.split(";") for v in song[header.index("segments_pitches")].split("_")]
