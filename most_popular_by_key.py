@@ -19,45 +19,39 @@ class MRMostPopularByKey(MRJob):
             song_hottt = float(line[header.index("song_hotttnesss")])
             key = int(line[header.index("key")])
             title = line[header.index("title")]
-            artist = line[header.index("artist")]
             if (not math.isnan(song_hottt)):
-                yield key, (title, artist, song_hottt)
+                yield key, (title, song_hottt)
 
         except:
             pass
 
     def combiner(self, key, info):
-        for (title, artist, song_hottt) in info:
-            yield key, (title, artist, song_hottt)
+        for (title, song_hottt) in info:
+            yield key, (title, song_hottt)
 
     def reducer_init(self):
         '''
         Initializes vars to store information about the most popular songs
         '''
         self.most_popular_title = [None] * 12
-        self.most_popular_artist = [None] * 12
         self.most_popular_score = [0.0] * 12
 
         self.temp_most_popular_title = None
-        self.temp_most_popular_artist = None
         self.temp_most_popular_score = 0.0
 
     def reducer(self, key, song_info):
         '''
         For each key, goes through songs to find the most popular one
         '''
-        for song, artist, hotttnesss in song_info:
+        for song, hotttnesss in song_info:
             if hotttnesss > self.temp_most_popular_score:
                 self.temp_most_popular_score = hotttnesss
                 self.temp_most_popular_title = song
-                self.temp_most_popular_artist = artist
         # store finalists in list
         self.most_popular_title[key] = self.temp_most_popular_title
-        self.most_popular_artist[key] = self.temp_most_popular_artist
         self.most_popular_score[key] = self.temp_most_popular_score
         # reset values for next key
         self.temp_most_popular_title = None
-        self.temp_most_popular_artist = None
         self.temp_most_popular_score = 0.0
 
     def reducer_final(self):
@@ -68,9 +62,8 @@ class MRMostPopularByKey(MRJob):
         for i in range(12):
             key = keys[i]
             title = self.most_popular_title[i]
-            artist = self.most_popular_artist[i]
             score = self.most_popular_score[i]
-            yield key, "{}, by {}, {}".format(title, artist, score)
+            yield key, "{}, {}".format(title, score)
 
 
 if __name__ == '__main__':
