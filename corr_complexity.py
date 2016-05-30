@@ -27,15 +27,13 @@ class MRCorrHotttnessAverage(MRJob):
     
             # normalize counts
             num_segs = len(pitches)
-            keys = [(x / num_segs) for x in keys]
+            keys = [(x / num_segs) * 1000 for x in keys]
     
             # separate into one of 100 buckets
             song_hottt = float(line.split(",")[header.index("song_hotttnesss")])
             hottt_bucket = round(song_hottt, 2)
     
             # shannon's diversity statistic
-            for x in keys:
-                print(x)
             num = -sum([x * math.log(x, 2) for x in keys])
             denom = math.log(12, 2)
             if denom < 0.001:
