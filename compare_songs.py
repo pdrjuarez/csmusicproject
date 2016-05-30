@@ -10,6 +10,7 @@ header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 import math
+import sys
 
 class MRcomparesong(MRJob):
 
@@ -30,7 +31,7 @@ class MRcomparesong(MRJob):
                 yield song_id, per_cent_match
 
     def combiner(self, key, vals):
-        '''Each key is 'title,artist', and is only yielded 1 or 0 times, therefore we don't really do much here
+        '''Each key is 'title,artist', and is only yielded 1 or 0 times, therefore we don't really do much here'''
         print("combiner", key)
         yield key, list(vals)[0]
 
@@ -55,7 +56,7 @@ class MatchObject:
         We also count the number of segments matched of the test song because we care about how much of the test song's melody 
         is found in other songs to decide whether it's a good match. The number of segments this match spans in the other song 
         is used to determine the percent match'''
-        if self.t_finish-self.t_start>=6:
+        if self.t_finish-self.t_start>=3:
             return True
 
 def percent_match(list_of_match_objects, other_song_segments_start, other_song_duration):
@@ -77,12 +78,13 @@ def percent_match(list_of_match_objects, other_song_segments_start, other_song_d
 
 def pitch_match(test_array, song_array, test_pitches):
     '''Our algorithm for comparing melodies. We don't look at pitches thesmelves, instead the relative pitches moving from one
-    segment to the next. This hopefullly catches melodies that have been transposed up or down in another song'''
+    segment to the next. This hopefullly catches melodies that have been transposed up or down in another song
         Input: test_array, the test_songs array of pitches for each segment
                song_array, the other songs's array of pitches for each segment
                test_pitches, the segment numbers we start looking for matches at in the test_song
         
-        Output: A list of match objects, each containing information about a significant match found between both pitch arrays'''
+        Output: A list of match objects, each containing information about a significant match found between both pitch arrays
+'''
     rv=[]
     for j in test_pitches:
         ##We decide to start looking for similarities at all of these points
@@ -208,7 +210,7 @@ if __name__ == '__main__':
             while count<len(test_array):
                 test_pitches.append(count)
                 count+=50
-           f.close()
+            f.close()
         except:
             print("{} only has {} songs, you asked for number {}".format(sys.argv[1], i-1, line_number))
             sys.exit(0)
