@@ -27,7 +27,6 @@ class MRMostPopularByKey(MRJob):
             pass
 
     def combiner(self, key, info):
-        print(key)
         for (title, artist, song_hottt) in info:
             yield key, (title, artist, song_hottt)
 
@@ -47,6 +46,7 @@ class MRMostPopularByKey(MRJob):
         '''
         For each key, goes through songs to find the most popular one
         '''
+        print("key")
         for song, artist, hotttnesss in song_info:
             if hotttnesss > self.temp_most_popular_score:
                 self.temp_most_popular_score = hotttnesss
