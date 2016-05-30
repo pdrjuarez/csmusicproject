@@ -9,7 +9,7 @@ header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,
 
 class MRCorrHotttnessAverage(MRJob):
 
-    def mapper(self, _, line):no
+    def mapper(self, _, line):
         '''
         For each song, classify the pitches of each segment, determine how 
         complex the song is according to the distribution of its notes,
