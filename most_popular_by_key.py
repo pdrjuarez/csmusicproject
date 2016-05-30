@@ -46,7 +46,6 @@ class MRMostPopularByKey(MRJob):
         '''
         For each key, goes through songs to find the most popular one
         '''
-        print("reducer", key)
         for song, artist, hotttnesss in song_info:
             if hotttnesss > self.temp_most_popular_score:
                 self.temp_most_popular_score = hotttnesss
@@ -67,7 +66,6 @@ class MRMostPopularByKey(MRJob):
         '''
         keys = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
         for i in range(12):
-            print("final", i)
             key = keys[i]
             title = self.most_popular_title[i]
             artist = self.most_popular_artist[i]
