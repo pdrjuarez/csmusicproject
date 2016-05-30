@@ -36,8 +36,13 @@ class MRCorrHotttnessAverage(MRJob):
         hottt_bucket = round(song_hottt, 2)
 
         # shannon's diversity statistic
-        div = -sum([x * math.log(x, 2) for x in keys]) / math.log(12, 2)
-        yield hottt_bucket, div
+        num = -sum([x * math.log(x, 2) for x in keys])
+        denom = math.log(12, 2)
+        if denom < 0.001:
+            pass
+        else:
+            div = num / denom
+            yield hottt_bucket, div
 
         # except:
         #     pass
