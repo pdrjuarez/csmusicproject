@@ -17,7 +17,8 @@ class MRcomparesong(MRJob):
     def mapper(self, _, line):
         '''We're just using MRJob as a way to distribute work, so this is the only thing that's interesting'''
         ##catch the header
-        if line[:12]!="artist,title":    
+        if line[:12]!="artist,title":
+            print("Not a header, yay!")
             song=line.split(",")
             pitch_array=[v.split(";") for v in song[header.index("segments_pitches")].split("_")]
             duration=song[header.index("duration")]
@@ -95,6 +96,7 @@ def pitch_match(test_array, song_array, test_pitches):
             rel_pitch=get_relative_pitch(song_array[i], song_array[i+1])
             #as soon as we find a match, we continue looking for similarities until they're too far apart in melody
             if starting_rel_pitch==rel_pitch:
+                print("potential match found...")
                 matchobject=MatchObject(j, None, i, None)
                 match=True
                 test_song_index=j+1
@@ -143,6 +145,7 @@ def pitch_match(test_array, song_array, test_pitches):
                 matchobject.t_finish=test_song_index
                 matchobject.s_finish=other_song_index
                 if matchobject.good_match():
+                    print("Found a significant match!")
                     rv.append(matchobject)
                 i=other_song_index+1
             i+=1
@@ -214,6 +217,7 @@ if __name__ == '__main__':
         except:
             print("{} only has {} songs, you asked for number {}".format(sys.argv[1], i-1, line_number))
             sys.exit(0)
+        print("about to run mrjob")
         MRcomparesong.run()
     else:
         print(usage)
