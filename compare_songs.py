@@ -50,12 +50,12 @@ class MatchObject:
         self.s_finish=s1
     def good_match(self):
         '''Basically a way to remove matches that don't last very long in number of segments. We don't care whether
-        the test song has a relative fourth pitch because likely every song has a relative fourth pitch -- the melody is captured
+        the test song has a relative fourth pitch because likely every song has a relative fourth pitch, the melody is captured
         by a sequence of these relative pitches. 10 is probably too big, though, can change.
         We also count the number of segments matched of the test song because we care about how much of the test song's melody 
         is found in other songs to decide whether it's a good match. The number of segments this match spans in the other song 
         is used to determine the percent match'''
-        if self.t_finish-self.t_start>=10:
+        if self.t_finish-self.t_start>=6:
             return True
 
 def percent_match(list_of_match_objects, other_song_segments_start, other_song_duration):
@@ -178,18 +178,43 @@ def get_relative_pitch(v1, v2):
 
 
 if __name__ == '__main__':
-    print("here")
-    f=open("A_A.csv")
-    trash=f.readline() #header
-    test_song=f.readline().split(",")
-    test_array=[v.split(";") for v in test_song[header.index("segments_pitches")].split("_")]
-    count=0
-    test_pitches=[]
-    print("all the way")
-    while count<len(test_array):
-        test_pitches.append(count)
-        count+=50
-    f.close()
-    print("we made it")
-    MRcomparesong.run()
+    usage = "python compare_songs.py <csv_filename> <song index in file>\n. Example use: compare_songs.py 'A_A.csv' 1 will look at the first song that is not a header in the A_A.csv file."
+    args_len=len(sys.argv)
+    if args_len==3:
+        try:
+            filename=str(sys.argv[1])
+            line_number=int(sys.argv[2])-1
+        except:
+            print ("{} not a valid int".format(sys.argv[2]))
+            print(usage)
+            sys.exit(0)
+        try:
+            f=open(filename)
+        except:
+            print("{} not a valid filename".format(sys.argv[1]))
+            print(usage)
+            sys.exit(0)
+        try:
+            trash=f.readline() #header
+            i=1
+            while i<line_number:
+                trash=f.readline() #getting to desired line
+                i+=1
+            test_song=f.readline().split(",")
+            test_array=[v.split(";") for v in test_song[header.index("segments_pitches")].split("_")]
+            count=0
+            test_pitches=[]
+            print("all the way")
+            while count<len(test_array):
+                test_pitches.append(count)
+                count+=50
+           f.close()
+        except:
+            print("{} only has {} songs, you asked for number {}".format(sys.argv[1], i-1, line_number))
+            sys.exit(0)
+        MRcomparesong.run()
+    else:
+        print(usage)
+        sys.exit(0)
+
 
