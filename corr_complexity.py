@@ -79,7 +79,6 @@ class Capturing(list):
 
 
 if __name__ == '__main__':
-    with Capturing() as output:
-        MRCorrHotttnessAverage.run()
+    MRCorrHotttnessAverage.run()
     
 
