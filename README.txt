@@ -1,78 +1,30 @@
 THE FAB'S TEAM: Final Project
 Pedro Juarez, Jordan Ng, and Michelle Kim
 CMSC 12300: Computer Science with Applications III, Spring 2016
-https://github.com/pdrjuarez/csmusicproject
 
 ------------------------
 FILES IN 'csmusicproject'
 ------------------------
-NOTES
+- NOTES : directory containing text files used for group communication
+    - TODO.txt : group to-do list
+    - code_docs.txt : documentation notes for aws and boto3 commands
+    - meeting_notes.txt : notes for first check-in meeting
+    - project_guidelines.txt : notes for guideline 
+    - project_proposal.txt : writeup of project proposal
+    - setup_instr.txt : draft of how to use setup.sh
+    - stuff.txt : miscellaneous notes
 
-csvify.py
-validate.py
+- README.txt : this file
 
-setup.sh
+- setup.sh : bash script to run on an ec2 instance to convert h5 files to csv
+- csvify.py : python script to convert h5 files to csv
 
+- compare_songs.py : python script to compare a song's segments against all other songs
+- corr_complexity.py : python script to answer whether a song's complexity is related to its popularity
+- corr_hotttness.py : python script to answer whether an artist's hotttnesss is related to their average song hotttnesss
+- count.py : python script to count how many songs is in a dataset, and to provide a baseline time
+- most_popular_by_key.py : python script to answer which songs have the highest hotttnesss by key
+- regression.py : python class to compute regressions
+- run_analyses.py : python file containing code to help test and run analyses
 
-##################################
-the below is a rough draft which
-ideally will be typed up in LaTeX
-or something else professional-ish
-##################################
------------------------
-DESCRIPTION OF DATA SET
------------------------
-http://labrosa.ee.columbia.edu/millionsong/
-
-
---------------------
-HYPOTHESES WE TESTED
---------------------
-
-
-------------------
-ALGORITHMS WE USED
-------------------
-
-
-------------------------
-BIG DATA APPROACHES USED
-------------------------
-
-
----------------------
-EXTRAPOLATED RUNTIMES (optional)
----------------------
-
-
-------------------------
-NEW BIG DATA TOOLS/TECHS (optional)
-------------------------
-
-
--------------------
-CHALLENGES WE FACED (and overcame, or didn't)
--------------------
-CHALLENGE: h5 files, didn't know how to read them
-SOLUTION: realize we need to work within an ec2 instance
-
-CHALLENGE: running setup.sh in our instance was difficult
-DESCRIPTION: The script took a long time. We didn't see the printouts at first because we went into root to actually run the script, but we were able to see them once we ctrl+d back to ec2-user. Things didn't work at first, but fiddling around with the code fixed it. Specifically, we reran the following manually:
-    
-    cd
-    git clone https://github.com/tbertinmahieux/MSongsDB
-
-    export HDF5_DIR=/usr/local/hdf5
-    export LD_LIBRARY_PATH=/usr/local/hdf5/lib
-    cd /home/ec2-user
-
-
-------------------
-THE RESULTS WE GOT
-------------------
-
-
-----------------------------
-HOW DID WE FIND OUR DATASET?
-----------------------------
-
+- test.csv : csv file containing 122 songs used for testing code
