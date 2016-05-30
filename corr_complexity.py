@@ -9,7 +9,7 @@ header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,
 
 class MRCorrHotttnessAverage(MRJob):
 
-    def mapper(self, _, line):
+    def mapper(self, _, line):no
         '''
         For each song, classify the pitches of each segment, determine how 
         complex the song is according to the distribution of its notes,
@@ -36,7 +36,7 @@ class MRCorrHotttnessAverage(MRJob):
         hottt_bucket = round(song_hottt, 2)
 
         # shannon's diversity statistic
-        div = -sum([x * math.log(x, 2) for x in norm_keys]) / math.log(12, 2)
+        div = -sum([x * math.log(x, 2) for x in keys]) / math.log(12, 2)
         yield hottt_bucket, div
 
         # except:
