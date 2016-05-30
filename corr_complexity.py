@@ -15,30 +15,32 @@ class MRCorrHotttnessAverage(MRJob):
         complex the song is according to the distribution of its notes,
         and bucket it by the song's hotttnesss score to the nearest 1000th.
         '''
+        # try:
+        # get pitches of each segment
+        pitches = line.split(",")[header.index("segments_pitches")]
+        pitches = [x.split(";") for x in pitches.split("_")]
+        keys = [0] * 12
+        for seg in pitches:
+            key = seg.index("1.0")
+            keys[key] += 1
+
+        # normalize counts
+        num_segs = len(pitches)
+        keys = [(x / num_segs) for x in keys]
+
+        # separate into one of 100 buckets
         try:
-            # get pitches of each segment
-            pitches = line.split(",")[header.index("segments_pitches")]
-            pitches = [x.split(";") for x in pitches.split("_")]
-            keys = [0] * 12
-            for seg in pitches:
-                key = seg.index("1.0")
-                keys[key] += 1
-
-            # normalize counts
-            num_segs = len(pitches)
-            keys = [(x / num_segs) for x in keys]
-
-            # separate into one of 100 buckets
             song_hottt = float(line.split(",")[header.index("song_hotttnesss")])
-            hottt_bucket = round(song_hottt, 2)
-
-            # shannon's diversity statistic
-            div = -sum([x * math.log(x, 2) for x in norm_keys]) / math.log(12, 2)
-            print(hottt_bucket, div)
-            yield hottt_bucket, div
-
         except:
-            pass
+            song_hottt = float('NaN')
+        hottt_bucket = round(song_hottt, 2)
+
+        # shannon's diversity statistic
+        div = -sum([x * math.log(x, 2) for x in norm_keys]) / math.log(12, 2)
+        yield hottt_bucket, div
+
+        # except:
+        #     pass
 
     def combiner(self, hottt_bucket, div):
         '''
