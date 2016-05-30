@@ -13,14 +13,7 @@ header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,
 
 class MRCorrHotttnessAverage(MRJob):
 
-    def steps(self):
-        return [
-            MRStep( mapper=self.mappera,
-                    combiner=self.combinera,
-                    reducer=self.reducera)
-            ]
-
-    def mappera(self, _, line):
+    def mapper(self, _, line):
         '''
         For each song, classify the pitches of each segment, determine how 
         complex the song is according to the distribution of its notes,
@@ -52,12 +45,12 @@ class MRCorrHotttnessAverage(MRJob):
         except:
             pass
 
-    def combinera(self, hottt_bucket, complexity):
+    def combiner(self, hottt_bucket, div):
         '''
         '''
         print("combiner")
-        complexity_list = list(complexity)
-        average_complexity = sum(complexity) / len(complexity)
+        complexity_list = list(div)
+        average_complexity = sum(complexity_list) / len(complexity_list)
         yield None, (hottt_bucket, average_complexity)
 
     def reducera(self, key, info):
