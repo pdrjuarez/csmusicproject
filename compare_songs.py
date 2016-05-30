@@ -181,8 +181,9 @@ def get_relative_pitch(v1, v2):
         return 12-(pitch2-pitch1)
     return pitch2-pitch1
 
-
+print("please print me!")
 if __name__ == '__main__':
+    print("please print me")
     usage = "python compare_songs.py <csv_filename> <song index in file>\n. Example use: compare_songs.py 'A_A.csv' 1 will look at the first song that is not a header in the A_A.csv file."
     args_len=len(sys.argv)
     if args_len==3:
