@@ -78,8 +78,8 @@ class Capturing(list):
         sys.stdout = self._stdout
 
 
-# if __name__ == '__main__':
-#     with Capturing() as output:
-#         MRCorrHotttnessAverage.run()
-#     print(output)
+if __name__ == '__main__':
+    with Capturing() as output:
+        MRCorrHotttnessAverage.run()
+    
 
