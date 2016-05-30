@@ -1,12 +1,9 @@
 NOTES
 
-        pip install --upgrade pip
+    import sys
+    csv.field_size_limit(sys.maxsize)
 
-#########################
-
-TECHNICAL
-- Figure out how to run things on an instance properly
-- Figure out how to run things on multiple instances properly
+####################################################################################
 
 ANALYSIS
 - Choose solid hypotheses

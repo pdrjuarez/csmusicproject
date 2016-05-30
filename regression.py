@@ -16,6 +16,10 @@ class LinearRegression:
         self.beta0 = 0
         self.beta1 = 0
         self.corr = 0
+
+        self.SE_beta0 = 0
+        self.SE_beta1 = 0
+
         if self.calculate_corr():
             self.calculate_betas()
         else:
