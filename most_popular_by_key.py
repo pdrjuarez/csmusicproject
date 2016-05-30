@@ -27,6 +27,7 @@ class MRMostPopularByKey(MRJob):
             pass
 
     def combiner(self, key, info):
+        print(key)
         for (title, artist, song_hottt) in info:
             yield key, (title, artist, song_hottt)
 
