@@ -19,6 +19,7 @@ class MRCorrHotttnessAverage(MRJob):
         # get pitches of each segment
         pitches = line.split(",")[header.index("segments_pitches")]
         pitches = [x.split(";") for x in pitches.split("_")]
+        pitches = [[float(x) for x in y] for y in pitches]
         keys = [0] * 12
         for seg in pitches:
             key = seg.index(max(seg))
