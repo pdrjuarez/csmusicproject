@@ -4,10 +4,6 @@
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 import math
-from scipy.stats import t
-
-from io import StringIO
-import sys
 
 header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,song_hotttnesss,artist_terms,artist_terms_freq, artist_terms_weight,mode,key,tempo,loudness,danceabilty,energy,time_signature,segments_start,segments_timbre,segments_pitches,segments_loudness_start,segments_loudness_max,segments_loudness_max_time,sections_start'''.split(",")
 
@@ -19,7 +15,6 @@ class MRCorrHotttnessAverage(MRJob):
         complex the song is according to the distribution of its notes,
         and bucket it by the song's hotttnesss score to the nearest 1000th.
         '''
-        print("mapper")
         try:
             # get pitches of each segment
             pitches = line.split(",")[header.index("segments_pitches")]
@@ -33,13 +28,13 @@ class MRCorrHotttnessAverage(MRJob):
             num_segs = len(pitches)
             keys = [(x / num_segs) for x in keys]
 
-            # separate into one of 1000 buckets
+            # separate into one of 100 buckets
             song_hottt = float(line.split(",")[header.index("song_hotttnesss")])
-            hottt_bucket = round(song_hottt, 3)
+            hottt_bucket = round(song_hottt, 2)
 
             # shannon's diversity statistic
             div = -sum([x * math.log(x, 2) for x in norm_keys]) / math.log(12, 2)
-
+            print(hottt_bucket, div)
             yield hottt_bucket, div
 
         except:
@@ -58,20 +53,6 @@ class MRCorrHotttnessAverage(MRJob):
         '''
         print("reducer")
         yield info[0], info[1]
-
-
-class Capturing(list):
-    '''
-    http://stackoverflow.com/questions/16571150/how-to-capture-stdout-output-from-a-python-function-call
-    '''
-    def __enter__(self):
-        self._stdout = sys.stdout
-        sys.stdout = self._stringio = StringIO()
-        return self
-
-    def __exit__(self, *args):
-        self.extend(self._stringio.getvalue().splitlines())
-        sys.stdout = self._stdout
 
 
 if __name__ == '__main__':
