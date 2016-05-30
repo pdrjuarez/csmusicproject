@@ -26,6 +26,10 @@ class MRMostPopularByKey(MRJob):
         except:
             pass
 
+    def combiner(self, key, info):
+        for (title, artist, song_hottt) in info:
+            yield key, (title, artist, song_hottt)
+
     def reducer_init(self):
         '''
         Initializes vars to store information about the most popular songs
