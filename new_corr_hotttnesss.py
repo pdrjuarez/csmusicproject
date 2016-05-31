@@ -96,6 +96,7 @@ class MRCorrHotttnessAverage(MRJob):
         beta0_p_value = t.sf(abs(t0), n - 2) * 2
         beta1_p_value = t.sf(abs(t1), n - 2) * 2
 
+        # output most important values in a human-readable format
         print("Correlation: {}".format(corr))
         print("Beta 0: {}, p-value: {}".format(beta0, beta0_p_value))
         print("Beta 1: {}, p-value: {}".format(beta1, beta1_p_value))
