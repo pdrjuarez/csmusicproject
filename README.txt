@@ -22,6 +22,7 @@ FILES IN 'csmusicproject'
 - compare_songs.py : python script to compare a song's segments against all other songs
 - corr_complexity.py : python script to answer whether a song's complexity is related to its popularity
 - corr_hotttness.py : python script to answer whether an artist's hotttnesss is related to their average song hotttnesss
+- new_corr_hotttness.py : python script that is same as above, but outputs in a human-readable way
 - count.py : python script to count how many songs is in a dataset, and to provide a baseline time
 - most_popular_by_key.py : python script to answer which songs have the highest hotttnesss by key
 - regression.py : python class to compute regressions
