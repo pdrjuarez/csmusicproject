@@ -1,9 +1,18 @@
+# Run_Analyses: Contains classes and functions to make processing
+# outputs easier, for testing purposes.
 import subprocess
 import regression
 
 
 class Capturing(list):
     '''
+    A context manager to capture stdout from a python function call,
+    as a python variable that can then be manipulated as a string.
+    
+    Usage:
+        with Capturing() as output:
+            do_something(my_object)
+            
     http://stackoverflow.com/questions/16571150/how-to-capture-stdout-output-from-a-python-function-call
     '''
     def __enter__(self):
@@ -18,8 +27,13 @@ class Capturing(list):
 
 def run_job(args):
     '''
+    A function to run a python script within python in exactly the same way
+    you would run it using a bash command, and return the stdout output
+    as a variable.
+    
     input:
-        args: list
+        args: list of str, such as:
+            ["script.py", "arg1", "arg2"]
 
     output:
         out: str
@@ -31,12 +45,15 @@ def run_job(args):
     return out
 
 
-def run_corr_hotttnesss(out):
+def run_regression(out):
+    '''
+    Quickly tests the above on regression.py, for viability.
+    '''
     # process output
     out = out.translate({ord(i):None for i in '[],'})
     out = out.split()
     out = [float(x) for x in out]
-    # run regression; this could probably be cleaned up lol
+    # run regression
     (n, sumx, sumy, sumxx, sumyy, sumxy) = out
     slr = LinearRegression(n, sumx, sumy, sumxx, sumyy, sumxy)
     return slr
