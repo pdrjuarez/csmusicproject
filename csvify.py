@@ -17,10 +17,14 @@ code_path='MSongsDB'
 assert os.path.isdir(code_path), 'Expected path MSongsDB'
 sys.path.append(os.path.join(code_path, 'PythonSrc'))
 
+#this is the wrapper code used to extract info from h5 files
 import hdf5_getters as gt
 header='''artist,title,album,year,duration,artist_familiarity,artist_hotttnesss,song_hotttnesss,artist_terms,artist_terms_freq, artist_terms_weight,mode,key,tempo,loudness,danceabilty,energy,time_signature,segments_start,segments_timbre,segments_pitches,segments_loudness_start,segments_loudness_max,segments_loudness_max_time,sections_start\n'''
 
 def csv_convert(basedir, csv_filename):
+	'''Function to convert all the information in a h5 file to a csv file, one song per line
+		Inputs: basedir, a string of subdirectory within the current directory
+			csv_filename, a filename where all the information will be written down'''
 	t1=time.time()
 	cnt=0
 	with open("/home/ec2-user/{}".format(csv_filename), "w") as csv_file:
@@ -29,19 +33,28 @@ def csv_convert(basedir, csv_filename):
 			files=glob.glob(os.path.join(root, '*.h5'))
 			for f in files:
 				h5=gt.open_h5_file_read(f)
+				##each h5 file actually has multiple songs
 				num_songs=gt.get_num_songs(h5)
 				for j in range(int(num_songs)):
 					if validate_song(h5, j):
 						cnt+=1
 						csv_file.write(h5_to_csv_fields(h5,j))
+						#sanity check to make sure this is working
 						if cnt%10==0:
 							print("{} files csved thus far".format(cnt))
+				#remember to close your files or you run out of memory...
 				h5.close()
 	t2=time.time()
 	print ('directory {} csv-ed in:'.format(basedir), strtimedelta(t1,t2))
 
 def h5_to_csv_fields(h5,song):
+	'''Converts h5 format to text
+		Inputs: h5, an h5 file object, usable with the wrapper code MSongsDB
+			song, an integer, representing which song in the h5 file to take the info out of (h5 files contain many songs)
+		Output: a string representing all the information of this song, as a single line of a csv file
+	'''
 	rv=[]
+	##All these are regular getter functions from wrapper code
 	rv.append(gt.get_artist_name(h5,song))
 	rv.append(gt.get_title(h5, song))
 	rv.append(gt.get_release(h5, song))
@@ -50,6 +63,9 @@ def h5_to_csv_fields(h5,song):
 	rv.append(gt.get_artist_familiarity(h5,song))
 	rv.append(gt.get_artist_hotttnesss(h5,song))
 	rv.append(gt.get_song_hotttnesss(h5, song))
+	
+	##artist_terms, artist_terms_freq, and artist_terms_weight getter functions
+	##are all arrays, so we need to turn them into strings first. We used '_' as a separator
 	rv.append(array_to_csv_field(list(gt.get_artist_terms(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_artist_terms_freq(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_artist_terms_weight(h5,song))))
@@ -62,21 +78,23 @@ def h5_to_csv_fields(h5,song):
 	rv.append(gt.get_time_signature(h5,song))
 	rv.append(array_to_csv_field(list(gt.get_segments_start(h5,song))))
 	##These arrays have vectors (Arrays) as items, 12 dimensional each
-	##For now, an array like [[1,2,3],[4,5,6]] will be written to csv as '1;2;3_4;5;6'
-	#not sure this is efficient on the csv side
-
+	##An array like [[1,2,3],[4,5,6]] will be written to csv as '1;2;3_4;5;6', i.e. there's two types of separators
 	rv.append(double_Array_to_csv_field(list(gt.get_segments_timbre(h5,song)),'_',';'))
 	rv.append(double_Array_to_csv_field(list(gt.get_segments_pitches(h5,song)),'_',';'))
-
 	rv.append(array_to_csv_field(list(gt.get_segments_loudness_start(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_segments_loudness_max(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_segments_loudness_max_time(h5,song))))
 	rv.append(array_to_csv_field(list(gt.get_sections_start(h5,song))))
+	##turn this list into a string with comma separators (i.e. a csv line)
 	rv_string=array_to_csv_field(rv, ",")
 	rv_string+="\n"
 	return rv_string
 
 def array_to_csv_field(array, char="_"):
+	'''Given an array of stuff, turns everything into a string and separates it by the character char
+		Inputs: array, an array of (not necessarily all strings)
+			char: the separator
+		Output: the string'''
 	rv=str(array[0])
 	for j in array[1:]:
 		rv+=char
@@ -84,7 +102,8 @@ def array_to_csv_field(array, char="_"):
 	return rv
 
 def double_Array_to_csv_field(double_array, char1, char2):
-
+	'''Basically the same as above, except this is when the items in the arrays
+	are arrays themselves, so we need two separator characters'''
 	rv=str(array_to_csv_field(double_array[0], char2))
 	for j in double_array[1:]:
 		rv+=char1
@@ -93,7 +112,8 @@ def double_Array_to_csv_field(double_array, char1, char2):
 
 
 def validate_song(h5_file,song):
-	'''Returns true/false if song is valid or not'''
+	'''Returns true/false if song is valid or not. This is essentially cleanup and only lets through songs
+	which have 'good' data (have a non-negligible duration, and have segments being most important)'''
 	try:
 		assert gt.get_year(h5_file, song)!='0'
 		assert gt.get_duration(h5_file, song)>60.0
@@ -111,31 +131,8 @@ def validate_song(h5_file,song):
 	return True
 
 def strtimedelta(starttime,stoptime):
+	'''To see how long stuff is taking'''
     return str(datetime.timedelta(seconds=stoptime-starttime))
-
-def apply_to_all_files(basedir, func=lambda x: x):
-	"""
-	   From a base directory, go through all subdirectories,
-	   find all files with the given extension, apply the
-	   given function 'func' to all of them.
-	   If no 'func' is passed, we do nothing except counting.
-	   INPUT
-	      basedir  - base directory of the dataset
-	      func     - function to apply to all filenames
-	      ext      - extension, .h5 by default
-	   RETURN
-	      number of files
-	"""
-	cnt = 0
-	# iterate over all files in all subdirectories
-	for root, dirs, files in os.walk(basedir):
-	    files = glob.glob(os.path.join(root,'*.h5'))
-	    # count files
-	    cnt += len(files)
-	    # apply function to all files
-	    for f in files :
-	        func(f)       
-	return cnt
 
 if __name__ == '__main__':
 	usage = "python csvify.py <subdirectory> <csv_filename>\n. Example use: csvify.py 'A/A/A' A_A_A.csv"
